@@ -103,3 +103,55 @@ main {
 #order-button:hover {
   background: #1f776d;
 }
+
+#search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px;
+  margin: 10px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.category-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.category-buttons button {
+  background: #264653;
+  color: white;
+}
+
+.category-buttons button:hover {
+  background: #1d3540;
+}
+
+.food-card {
+  overflow: hidden;
+  padding: 0 0 20px;
+}
+
+.food-card h3,
+.food-card p,
+.food-card button {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.food-card h3 {
+  margin-top: 15px;
+}
+
+.food-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.food-card button {
+  margin-top: 5px;
+}

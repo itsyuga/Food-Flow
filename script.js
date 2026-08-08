@@ -83,3 +83,32 @@ function placeOrder() {
 }
 
 updateCart();
+
+function filterFood(category) {
+  const foodCards = document.querySelectorAll(".food-card");
+
+  foodCards.forEach(function (card) {
+    if (category === "all" || card.dataset.category === category) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", function () {
+  const searchText = searchInput.value.toLowerCase();
+  const foodCards = document.querySelectorAll(".food-card");
+
+  foodCards.forEach(function (card) {
+    const foodName = card.dataset.name;
+
+    if (foodName.includes(searchText)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+});

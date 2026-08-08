@@ -14,27 +14,66 @@
   </header>
 
   <main>
-    <h2>Popular Foods</h2>
+    <h2>Find Your Favorite Food</h2>
 
-    <section class="food-list">
-      <div class="food-card">
-        <h3>Chicken Biryani</h3>
-        <p>₹220</p>
-        <button onclick="addToCart('Chicken Biryani', 220)">Add to Cart</button>
-      </div>
+<input
+  type="search"
+  id="search-input"
+  placeholder="Search food here..."
+>
 
-      <div class="food-card">
-        <h3>Veg Fried Rice</h3>
-        <p>₹150</p>
-        <button onclick="addToCart('Veg Fried Rice', 150)">Add to Cart</button>
-      </div>
+<div class="category-buttons">
+  <button onclick="filterFood('all')">All</button>
+  <button onclick="filterFood('rice')">Rice</button>
+  <button onclick="filterFood('pizza')">Pizza</button>
+  <button onclick="filterFood('snacks')">Snacks</button>
+</div>
 
-      <div class="food-card">
-        <h3>Paneer Pizza</h3>
-        <p>₹280</p>
-        <button onclick="addToCart('Paneer Pizza', 280)">Add to Cart</button>
-      </div>
-    </section>
+<section class="food-list" id="food-list">
+
+  <div class="food-card" data-category="rice" data-name="chicken biryani">
+    <img src="https://images.unsplash.com/photo-1631515242808-497c3fbd3972?auto=format&fit=crop&w=600&q=80" alt="Chicken Biryani">
+    <h3>Chicken Biryani</h3>
+    <p>₹220</p>
+    <button onclick="addToCart('Chicken Biryani', 220)">Add to Cart</button>
+  </div>
+
+  <div class="food-card" data-category="rice" data-name="veg fried rice">
+    <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80" alt="Veg Fried Rice">
+    <h3>Veg Fried Rice</h3>
+    <p>₹150</p>
+    <button onclick="addToCart('Veg Fried Rice', 150)">Add to Cart</button>
+  </div>
+
+  <div class="food-card" data-category="pizza" data-name="paneer pizza">
+    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80" alt="Paneer Pizza">
+    <h3>Paneer Pizza</h3>
+    <p>₹280</p>
+    <button onclick="addToCart('Paneer Pizza', 280)">Add to Cart</button>
+  </div>
+
+  <div class="food-card" data-category="snacks" data-name="french fries">
+    <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80" alt="French Fries">
+    <h3>French Fries</h3>
+    <p>₹120</p>
+    <button onclick="addToCart('French Fries', 120)">Add to Cart</button>
+  </div>
+
+  <div class="food-card" data-category="snacks" data-name="veg burger">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Veg Burger">
+    <h3>Veg Burger</h3>
+    <p>₹160</p>
+    <button onclick="addToCart('Veg Burger', 160)">Add to Cart</button>
+  </div>
+
+  <div class="food-card" data-category="pizza" data-name="margherita pizza">
+    <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=600&q=80" alt="Margherita Pizza">
+    <h3>Margherita Pizza</h3>
+    <p>₹240</p>
+    <button onclick="addToCart('Margherita Pizza', 240)">Add to Cart</button>
+  </div>
+
+</section>
 
   <section id="cart-section">
   <div class="cart-title">
