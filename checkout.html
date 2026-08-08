@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Taste Town</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Taste Town</h1>
+    <a class="back-link" href="index.html">← Back to Menu</a>
+  </header>
+
+  <main>
+    <section class="checkout-box">
+      <h2>Checkout</h2>
+
+      <div id="order-summary"></div>
+
+      <form id="checkout-form">
+        <label for="customer-name">Full Name</label>
+        <input type="text" id="customer-name" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
+
+        <label for="address">Delivery Address</label>
+        <textarea id="address" rows="4" required></textarea>
+
+        <label for="payment-method">Payment Method</label>
+        <select id="payment-method" required>
+          <option value="">Choose payment method</option>
+          <option value="Cash on Delivery">Cash on Delivery</option>
+          <option value="UPI">UPI</option>
+        </select>
+
+        <button type="submit">Confirm Order</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="checkout.js"></script>
+</body>
+</html>

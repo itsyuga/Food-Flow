@@ -155,3 +155,41 @@ main {
 .food-card button {
   margin-top: 5px;
 }
+
+.back-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.checkout-box {
+  max-width: 650px;
+  margin: 0 auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.checkout-box label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.checkout-box input,
+.checkout-box textarea,
+.checkout-box select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.checkout-box button {
+  margin-top: 20px;
+  background: #2a9d8f;
+  color: white;
+}

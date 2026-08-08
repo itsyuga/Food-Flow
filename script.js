@@ -72,14 +72,13 @@ function updateCart() {
   totalPrice.textContent = total;
 }
 
-function placeOrder() {
+function goToCheckout() {
   if (cart.length === 0) {
     alert("Your cart is empty. Please add food first.");
     return;
   }
 
-  alert("Order placed successfully! Thank you for ordering from Taste Town.");
-  clearCart();
+  window.location.href = "checkout.html";
 }
 
 updateCart();
