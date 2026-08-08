@@ -1,25 +1,26 @@
-const orders = JSON.parse(localStorage.getItem("foodOrders")) || [];
+const savedOrders = localStorage.getItem("foodOrders");
+const orders = savedOrders ? JSON.parse(savedOrders) : [];
+
 const ordersList = document.getElementById("orders-list");
 
-function showOrders() {
-  if (orders.length === 0) {
-    ordersList.innerHTML = `
-      <div class="empty-orders">
-        <p>You have not placed any orders yet.</p>
-        <a href="index.html">Order food now</a>
-      </div>
-    `;
-    return;
-  }
-
+if (orders.length === 0) {
+  ordersList.innerHTML = `
+    <div class="empty-orders">
+      <p>You have not placed any orders yet.</p>
+      <a href="index.html">Order food now</a>
+    </div>
+  `;
+} else {
   let ordersHTML = "";
 
   orders.slice().reverse().forEach(function (order) {
-    let itemHTML = "";
+    let foodItems = "";
 
     order.items.forEach(function (item) {
-      itemHTML += `
-        <li>${item.name} × ${item.quantity} — ₹${item.price * item.quantity}</li>
+      const itemTotal = item.price * item.quantity;
+
+      foodItems += `
+        <li>${item.name} × ${item.quantity} — ₹${itemTotal}</li>
       `;
     });
 
@@ -38,15 +39,13 @@ function showOrders() {
         <p><strong>Address:</strong> ${order.address}</p>
         <p><strong>Payment:</strong> ${order.paymentMethod}</p>
 
-        <h4>Items</h4>
-        <ul>${itemHTML}</ul>
+        <h4>Food Items</h4>
+        <ul>${foodItems}</ul>
 
-        <h3>Total Paid: ₹${order.totalAmount}</h3>
+        <h3>Total Amount: ₹${order.totalAmount}</h3>
       </article>
     `;
   });
 
   ordersList.innerHTML = ordersHTML;
 }
-
-showOrders();
