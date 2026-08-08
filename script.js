@@ -1,12 +1,41 @@
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("foodCart")) || [];
 
 function addToCart(foodName, foodPrice) {
-  cart.push({
-    name: foodName,
-    price: foodPrice
+  const existingFood = cart.find(function (item) {
+    return item.name === foodName;
   });
 
+  if (existingFood) {
+    existingFood.quantity += 1;
+  } else {
+    cart.push({
+      name: foodName,
+      price: foodPrice,
+      quantity: 1
+    });
+  }
+
+  saveCart();
   updateCart();
+}
+
+function removeFromCart(foodName) {
+  cart = cart.filter(function (item) {
+    return item.name !== foodName;
+  });
+
+  saveCart();
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  saveCart();
+  updateCart();
+}
+
+function saveCart() {
+  localStorage.setItem("foodCart", JSON.stringify(cart));
 }
 
 function updateCart() {
@@ -17,16 +46,40 @@ function updateCart() {
   cartItems.innerHTML = "";
 
   let total = 0;
+  let totalItems = 0;
 
   cart.forEach(function (item) {
-    cartItems.innerHTML += `<p>${item.name} - ₹${item.price}</p>`;
-    total += item.price;
+    const itemTotal = item.price * item.quantity;
+
+    cartItems.innerHTML += `
+      <div class="cart-item">
+        <p>${item.name} × ${item.quantity} = ₹${itemTotal}</p>
+        <button class="remove-button" onclick="removeFromCart('${item.name}')">
+          Remove
+        </button>
+      </div>
+    `;
+
+    total += itemTotal;
+    totalItems += item.quantity;
   });
 
   if (cart.length === 0) {
     cartItems.innerHTML = "<p>Your cart is empty.</p>";
   }
 
-  cartCount.textContent = cart.length;
+  cartCount.textContent = totalItems;
   totalPrice.textContent = total;
 }
+
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Please add food first.");
+    return;
+  }
+
+  alert("Order placed successfully! Thank you for ordering from Taste Town.");
+  clearCart();
+}
+
+updateCart();

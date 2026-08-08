@@ -36,13 +36,19 @@
       </div>
     </section>
 
-    <section id="cart-section">
-      <h2>Your Cart</h2>
-      <div id="cart-items">
-        <p>Your cart is empty.</p>
-      </div>
-      <h3>Total: ₹<span id="total-price">0</span></h3>
-    </section>
+  <section id="cart-section">
+  <div class="cart-title">
+    <h2>Your Cart</h2>
+    <button class="clear-button" onclick="clearCart()">Clear Cart</button>
+  </div>
+
+  <div id="cart-items">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <h3>Total: ₹<span id="total-price">0</span></h3>
+  <button id="order-button" onclick="placeOrder()">Place Order</button>
+</section>  
   </main>
 
   <script src="script.js"></script>

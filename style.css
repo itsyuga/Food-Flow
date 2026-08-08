@@ -64,3 +64,42 @@ main {
   padding: 20px;
   border-radius: 10px;
 }
+
+.cart-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item p {
+  margin: 0;
+}
+
+.remove-button,
+.clear-button {
+  background: #d62828;
+  color: white;
+}
+
+.remove-button:hover,
+.clear-button:hover {
+  background: #a4161a;
+}
+
+#order-button {
+  background: #2a9d8f;
+  color: white;
+  margin-top: 10px;
+}
+
+#order-button:hover {
+  background: #1f776d;
+}
