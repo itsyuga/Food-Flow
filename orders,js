@@ -1,0 +1,52 @@
+const orders = JSON.parse(localStorage.getItem("foodOrders")) || [];
+const ordersList = document.getElementById("orders-list");
+
+function showOrders() {
+  if (orders.length === 0) {
+    ordersList.innerHTML = `
+      <div class="empty-orders">
+        <p>You have not placed any orders yet.</p>
+        <a href="index.html">Order food now</a>
+      </div>
+    `;
+    return;
+  }
+
+  let ordersHTML = "";
+
+  orders.slice().reverse().forEach(function (order) {
+    let itemHTML = "";
+
+    order.items.forEach(function (item) {
+      itemHTML += `
+        <li>${item.name} × ${item.quantity} — ₹${item.price * item.quantity}</li>
+      `;
+    });
+
+    ordersHTML += `
+      <article class="order-card">
+        <div class="order-top">
+          <div>
+            <h3>Order ID: ${order.orderId}</h3>
+            <p><strong>Ordered:</strong> ${order.orderedAt}</p>
+          </div>
+          <span class="order-status">${order.status}</span>
+        </div>
+
+        <p><strong>Customer:</strong> ${order.customerName}</p>
+        <p><strong>Phone:</strong> ${order.phone}</p>
+        <p><strong>Address:</strong> ${order.address}</p>
+        <p><strong>Payment:</strong> ${order.paymentMethod}</p>
+
+        <h4>Items</h4>
+        <ul>${itemHTML}</ul>
+
+        <h3>Total Paid: ₹${order.totalAmount}</h3>
+      </article>
+    `;
+  });
+
+  ordersList.innerHTML = ordersHTML;
+}
+
+showOrders();

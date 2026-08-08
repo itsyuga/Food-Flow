@@ -193,3 +193,71 @@ main {
   background: #2a9d8f;
   color: white;
 }
+
+.orders-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.order-card {
+  background: white;
+  padding: 22px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.order-card h3,
+.order-card h4 {
+  margin-top: 0;
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 12px;
+}
+
+.order-status {
+  height: fit-content;
+  background: #2a9d8f;
+  color: white;
+  padding: 7px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.order-card ul {
+  padding-left: 20px;
+}
+
+.order-card li {
+  margin: 8px 0;
+}
+
+.empty-orders {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.empty-orders a {
+  color: #e85d04;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.orders-link {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
