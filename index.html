@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taste Town - Food Ordering</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Taste Town</h1>
+    <button id="cart-button">Cart (<span id="cart-count">0</span>)</button>
+  </header>
+
+  <main>
+    <h2>Popular Foods</h2>
+
+    <section class="food-list">
+      <div class="food-card">
+        <h3>Chicken Biryani</h3>
+        <p>₹220</p>
+        <button onclick="addToCart('Chicken Biryani', 220)">Add to Cart</button>
+      </div>
+
+      <div class="food-card">
+        <h3>Veg Fried Rice</h3>
+        <p>₹150</p>
+        <button onclick="addToCart('Veg Fried Rice', 150)">Add to Cart</button>
+      </div>
+
+      <div class="food-card">
+        <h3>Paneer Pizza</h3>
+        <p>₹280</p>
+        <button onclick="addToCart('Paneer Pizza', 280)">Add to Cart</button>
+      </div>
+    </section>
+
+    <section id="cart-section">
+      <h2>Your Cart</h2>
+      <div id="cart-items">
+        <p>Your cart is empty.</p>
+      </div>
+      <h3>Total: ₹<span id="total-price">0</span></h3>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
