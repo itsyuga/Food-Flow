@@ -1,7 +1,9 @@
 let orders = JSON.parse(localStorage.getItem("foodOrders")) || [];
+let customFoods = JSON.parse(localStorage.getItem("customFoods")) || [];
 
 const adminOrdersList = document.getElementById("admin-orders-list");
-
+const addFoodForm = document.getElementById("add-food-form");
+const adminFoodList = document.getElementById("admin-food-list");
 function showAdminOrders() {
   if (orders.length === 0) {
     adminOrdersList.innerHTML = `
@@ -83,4 +85,88 @@ function updateOrderStatus(orderId, newStatus) {
   showAdminOrders();
 }
 
+addFoodForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const foodName = document.getElementById("food-name").value.trim();
+  const foodPrice = Number(document.getElementById("food-price").value);
+  const foodCategory = document.getElementById("food-category").value;
+  const foodImage = document.getElementById("food-image").value.trim();
+
+  const newFood = {
+    id: "food-" + Date.now(),
+    name: foodName,
+    price: foodPrice,
+    category: foodCategory,
+    image: foodImage
+  };
+
+  customFoods.push(newFood);
+
+  localStorage.setItem("customFoods", JSON.stringify(customFoods));
+
+alert(foodName + " was added to the menu successfully.");
+addFoodForm.reset();
+showAdminFoods();  
+});
+
 showAdminOrders();
+function showAdminFoods() {
+  if (customFoods.length === 0) {
+    adminFoodList.innerHTML = `
+      <div class="empty-orders">
+        <p>No custom food items have been added yet.</p>
+      </div>
+    `;
+    return;
+  }
+
+  let foodHTML = "";
+
+  customFoods.forEach(function (food) {
+    foodHTML += `
+      <article class="admin-food-card">
+        <img
+          src="${food.image}"
+          alt="${food.name}"
+          onerror="this.src='https://placehold.co/600x400/f4a261/ffffff?text=Food+Image'"
+        >
+
+        <div>
+          <h3>${food.name}</h3>
+          <p><strong>Price:</strong> ₹${food.price}</p>
+          <p><strong>Category:</strong> ${food.category}</p>
+
+          <button
+            class="delete-food-button"
+            onclick="deleteFood('${food.id}')"
+          >
+            Delete Food
+          </button>
+        </div>
+      </article>
+    `;
+  });
+
+  adminFoodList.innerHTML = foodHTML;
+}
+
+function deleteFood(foodId) {
+  const userConfirmed = confirm("Are you sure you want to delete this food item?");
+
+  if (!userConfirmed) {
+    return;
+  }
+
+  customFoods = customFoods.filter(function (food) {
+    return food.id !== foodId;
+  });
+
+  localStorage.setItem("customFoods", JSON.stringify(customFoods));
+
+  showAdminFoods();
+
+  alert("Food item deleted successfully.");
+}
+showAdminOrders();
+showAdminFoods();

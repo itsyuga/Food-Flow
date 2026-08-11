@@ -17,9 +17,46 @@
     <section class="admin-page">
       <h2>Order Management</h2>
       <p>Update the status of customer orders below.</p>
+      <section class="admin-food-list">
+  <h2>Manage Food Items</h2>
+  <p>Delete food items that you no longer want to show on the menu.</p>
+
+  <div id="admin-food-list"></div>
+</section>
 
       <div id="admin-orders-list"></div>
+     
     </section>
+    <section class="food-management">
+  <h2>Food Management</h2>
+  <p>Add a new food item to the menu.</p>
+
+  <form id="add-food-form">
+    <label for="food-name">Food Name</label>
+    <input type="text" id="food-name" required>
+
+    <label for="food-price">Price (₹)</label>
+    <input type="number" id="food-price" min="1" required>
+
+    <label for="food-category">Category</label>
+    <select id="food-category" required>
+      <option value="">Select category</option>
+      <option value="rice">Rice</option>
+      <option value="pizza">Pizza</option>
+      <option value="snacks">Snacks</option>
+    </select>
+
+    <label for="food-image">Food Image URL</label>
+    <input
+      type="url"
+      id="food-image"
+      placeholder="Paste an image link here"
+      required
+    >
+
+    <button type="submit">Add Food Item</button>
+  </form>
+</section>
   </main>
 
   <script src="./admin.js"></script>

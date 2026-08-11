@@ -111,3 +111,33 @@ searchInput.addEventListener("input", function () {
     }
   });
 });
+
+function showCustomFoods() {
+  const customFoods = JSON.parse(localStorage.getItem("customFoods")) || [];
+  const foodList = document.getElementById("food-list");
+
+  customFoods.forEach(function (food) {
+    const foodCard = document.createElement("div");
+
+    foodCard.className = "food-card";
+    foodCard.dataset.category = food.category;
+    foodCard.dataset.name = food.name.toLowerCase();
+
+    foodCard.innerHTML = `
+    <img
+  src="${food.image}"
+  alt="${food.name}"
+  onerror="this.src='https://placehold.co/600x400/f4a261/ffffff?text=Food+Image'"
+>  
+      <p>₹${food.price}</p>
+      <button onclick="addToCart('${food.name}', ${food.price})">
+        Add to Cart
+      </button>
+    `;
+
+    foodList.appendChild(foodCard);
+  });
+}
+
+showCustomFoods();
+

@@ -298,3 +298,81 @@ main {
   border-radius: 6px;
   font-size: 15px;
 }
+
+.food-management {
+  max-width: 850px;
+  margin: 0 auto 30px;
+  background: white;
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.food-management label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.food-management input,
+.food-management select {
+  width: 100%;
+  max-width: 550px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.food-management button {
+  margin-top: 20px;
+  background: #2a9d8f;
+  color: white;
+}
+
+.admin-food-list {
+  max-width: 850px;
+  margin: 0 auto 30px;
+  background: white;
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.admin-food-card {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-food-card:last-child {
+  border-bottom: none;
+}
+
+.admin-food-card img {
+  width: 120px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.admin-food-card h3 {
+  margin: 0 0 8px;
+}
+
+.admin-food-card p {
+  margin: 5px 0;
+}
+
+.delete-food-button {
+  background: #d62828;
+  color: white;
+  margin-top: 8px;
+}
+
+.delete-food-button:hover {
+  background: #a4161a;
+}
