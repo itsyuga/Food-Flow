@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | Food Flow</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><a class="brand" href="index.html">Food <span>Flow</span></a><a class="back-link" href="index.html">← Back to Menu</a></header>
+  <main><section class="checkout-box auth-box">
+    <p class="eyebrow">Welcome to Food Flow</p><h2 id="auth-title">Sign in</h2>
+    <p id="auth-copy">Sign in to place and track your orders.</p>
+    <form id="auth-form">
+      <label for="full-name" id="name-label" hidden>Full Name</label><input id="full-name" type="text" autocomplete="name" hidden>
+      <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
+      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="6" required>
+      <p id="auth-message" role="alert"></p><button type="submit" id="auth-submit">Sign in</button>
+    </form>
+    <button class="text-button" id="auth-toggle" type="button">New here? Create an account</button>
+  </section></main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="login.js"></script>
+</body>
+</html>

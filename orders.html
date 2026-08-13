@@ -3,25 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Orders - Taste Town</title>
+  <title>My Orders | Food Flow</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <header>
-    <h1>Taste Town</h1>
+    <a class="brand" href="index.html" aria-label="Food Flow home">Food <span>Flow</span></a>
     <a class="back-link" href="index.html">← Back to Menu</a>
   </header>
-
   <main>
     <section class="orders-page">
+      <p class="eyebrow">Order tracking</p>
       <h2>My Orders</h2>
-      <div id="orders-list">
-        <p>Loading orders...</p>
-      </div>
+      <div id="orders-list" aria-live="polite"></div>
     </section>
   </main>
-
-  <script src="./orders.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="orders.js"></script>
 </body>
 </html>

@@ -1,143 +1,146 @@
 let cart = JSON.parse(localStorage.getItem("foodCart")) || [];
+let selectedCategory = "all";
 
-function addToCart(foodName, foodPrice) {
-  const existingFood = cart.find(function (item) {
-    return item.name === foodName;
-  });
+const cartItems = document.getElementById("cart-items");
+const cartCount = document.getElementById("cart-count");
+const totalPrice = document.getElementById("total-price");
+const searchInput = document.getElementById("search-input");
+const foodList = document.getElementById("food-list");
 
-  if (existingFood) {
-    existingFood.quantity += 1;
-  } else {
-    cart.push({
-      name: foodName,
-      price: foodPrice,
-      quantity: 1
-    });
-  }
+function saveCart() { localStorage.setItem("foodCart", JSON.stringify(cart)); }
 
+function addToCart(name, price) {
+  const existingFood = cart.find((item) => item.name === name);
+  if (existingFood) existingFood.quantity += 1;
+  else cart.push({ name, price, quantity: 1 });
   saveCart();
   updateCart();
 }
 
-function removeFromCart(foodName) {
-  cart = cart.filter(function (item) {
-    return item.name !== foodName;
-  });
+function removeFromCart(name) {
+  cart = cart.filter((item) => item.name !== name);
+  saveCart();
+  updateCart();
+}
 
+function changeQuantity(name, change) {
+  const item = cart.find((food) => food.name === name);
+  if (!item) return;
+  item.quantity += change;
+  if (item.quantity <= 0) return removeFromCart(name);
   saveCart();
   updateCart();
 }
 
 function clearCart() {
-  cart = [];
-  saveCart();
-  updateCart();
-}
-
-function saveCart() {
-  localStorage.setItem("foodCart", JSON.stringify(cart));
+  if (!cart.length || confirm("Clear all items from your cart?")) {
+    cart = [];
+    saveCart();
+    updateCart();
+  }
 }
 
 function updateCart() {
-  const cartItems = document.getElementById("cart-items");
-  const cartCount = document.getElementById("cart-count");
-  const totalPrice = document.getElementById("total-price");
-
-  cartItems.innerHTML = "";
-
+  cartItems.replaceChildren();
   let total = 0;
   let totalItems = 0;
+  if (!cart.length) cartItems.innerHTML = "<p>Your cart is empty.</p>";
 
-  cart.forEach(function (item) {
+  cart.forEach((item) => {
     const itemTotal = item.price * item.quantity;
-
-    cartItems.innerHTML += `
-      <div class="cart-item">
-        <p>${item.name} × ${item.quantity} = ₹${itemTotal}</p>
-        <button class="remove-button" onclick="removeFromCart('${item.name}')">
-          Remove
-        </button>
-      </div>
-    `;
-
     total += itemTotal;
     totalItems += item.quantity;
+    const row = document.createElement("div");
+    row.className = "cart-item";
+    const info = document.createElement("div");
+    info.innerHTML = `<p></p><small>₹${item.price} each</small>`;
+    info.querySelector("p").textContent = item.name;
+    const actions = document.createElement("div");
+    actions.className = "cart-item-actions";
+    const minus = makeButton("−", "quantity-button", () => changeQuantity(item.name, -1));
+    minus.setAttribute("aria-label", `Remove one ${item.name}`);
+    const quantity = document.createElement("strong"); quantity.textContent = item.quantity;
+    const plus = makeButton("+", "quantity-button", () => changeQuantity(item.name, 1));
+    plus.setAttribute("aria-label", `Add one ${item.name}`);
+    const subtotal = document.createElement("strong"); subtotal.textContent = `₹${itemTotal}`;
+    actions.append(minus, quantity, plus, subtotal, makeButton("Remove", "remove-button", () => removeFromCart(item.name)));
+    row.append(info, actions);
+    cartItems.append(row);
   });
-
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<p>Your cart is empty.</p>";
-  }
-
   cartCount.textContent = totalItems;
   totalPrice.textContent = total;
 }
 
-function goToCheckout() {
-  if (cart.length === 0) {
-    alert("Your cart is empty. Please add food first.");
-    return;
-  }
+function makeButton(label, className, handler) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.textContent = label;
+  button.addEventListener("click", handler);
+  return button;
+}
 
+function goToCheckout() {
+  if (!cart.length) return alert("Your cart is empty. Please add food first.");
   window.location.href = "checkout.html";
 }
 
-updateCart();
-
-function filterFood(category) {
-  const foodCards = document.querySelectorAll(".food-card");
-
-  foodCards.forEach(function (card) {
-    if (category === "all" || card.dataset.category === category) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+function applyFilters() {
+  const searchText = searchInput.value.toLowerCase().trim();
+  document.querySelectorAll(".food-card").forEach((card) => {
+    const visible = (selectedCategory === "all" || card.dataset.category === selectedCategory) && card.dataset.name.includes(searchText);
+    card.hidden = !visible;
   });
 }
 
-const searchInput = document.getElementById("search-input");
-
-searchInput.addEventListener("input", function () {
-  const searchText = searchInput.value.toLowerCase();
-  const foodCards = document.querySelectorAll(".food-card");
-
-  foodCards.forEach(function (card) {
-    const foodName = card.dataset.name;
-
-    if (foodName.includes(searchText)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+document.querySelectorAll(".category-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+    document.querySelectorAll(".category-button").forEach((item) => item.classList.toggle("active", item === button));
+    applyFilters();
   });
 });
+searchInput.addEventListener("input", applyFilters);
 
 function showCustomFoods() {
   const customFoods = JSON.parse(localStorage.getItem("customFoods")) || [];
-  const foodList = document.getElementById("food-list");
-
-  customFoods.forEach(function (food) {
-    const foodCard = document.createElement("div");
-
-    foodCard.className = "food-card";
-    foodCard.dataset.category = food.category;
-    foodCard.dataset.name = food.name.toLowerCase();
-
-    foodCard.innerHTML = `
-    <img
-  src="${food.image}"
-  alt="${food.name}"
-  onerror="this.src='https://placehold.co/600x400/f4a261/ffffff?text=Food+Image'"
->  
-      <p>₹${food.price}</p>
-      <button onclick="addToCart('${food.name}', ${food.price})">
-        Add to Cart
-      </button>
-    `;
-
-    foodList.appendChild(foodCard);
+  customFoods.forEach((food) => {
+    const card = document.createElement("article");
+    card.className = "food-card";
+    card.dataset.category = food.category;
+    card.dataset.name = food.name.toLowerCase();
+    const image = document.createElement("img"); image.src = food.image; image.alt = food.name;
+    image.onerror = () => { image.src = "https://placehold.co/600x400/f4a261/ffffff?text=Food+Image"; };
+    const title = document.createElement("h3"); title.textContent = food.name;
+    const price = document.createElement("p"); price.className = "food-price"; price.textContent = `₹${food.price}`;
+    const button = makeButton("Add to Cart", "", () => addToCart(food.name, food.price));
+    card.append(image, title, price, button);
+    foodList.append(card);
   });
 }
 
 showCustomFoods();
+updateCart();
+applyFilters();
 
+async function loadSupabaseMenu() {
+  const { data: foods, error } = await window.foodFlowSupabase
+    .from("food_items")
+    .select("id, name, price, category, image_url")
+    .order("created_at");
+  if (error || !foods?.length) return;
+  foodList.replaceChildren();
+  foods.forEach((food) => {
+    const card = document.createElement("article"); card.className = "food-card";
+    card.dataset.category = food.category; card.dataset.name = food.name.toLowerCase();
+    const image = document.createElement("img"); image.src = food.image_url; image.alt = food.name;
+    image.onerror = () => { image.src = "https://placehold.co/600x400/f4a261/ffffff?text=Food+Image"; };
+    const title = document.createElement("h3"); title.textContent = food.name;
+    const price = document.createElement("p"); price.className = "food-price"; price.textContent = `₹${food.price}`;
+    card.append(image, title, price, makeButton("Add to Cart", "", () => addToCart(food.name, food.price)));
+    foodList.append(card);
+  });
+  applyFilters();
+}
+
+loadSupabaseMenu();

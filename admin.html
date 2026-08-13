@@ -3,62 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Taste Town</title>
+  <title>Admin Dashboard | Food Flow</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <header>
-    <h1>Taste Town Admin</h1>
-    <a class="back-link" href="index.html">← Back to Menu</a>
+    <a class="brand" href="index.html" aria-label="Food Flow home">Food <span>Flow</span></a>
+    <a class="back-link" href="index.html">← Customer Menu</a>
   </header>
-
   <main>
     <section class="admin-page">
-      <h2>Order Management</h2>
-      <p>Update the status of customer orders below.</p>
+      <p class="eyebrow">Operations centre</p>
+      <h2>Admin Dashboard</h2>
+      <p class="admin-intro">Manage incoming orders and keep your Food Flow menu up to date.</p>
+      <div class="admin-stats" aria-label="Dashboard summary">
+        <article><span id="total-orders">0</span><p>Total orders</p></article>
+        <article><span id="active-orders">0</span><p>Active orders</p></article>
+        <article><span id="menu-items">0</span><p>Custom menu items</p></article>
+      </div>
+
       <section class="admin-food-list">
-  <h2>Manage Food Items</h2>
-  <p>Delete food items that you no longer want to show on the menu.</p>
+        <div class="section-heading"><div><h2>Menu Items</h2><p>Custom dishes currently visible to customers.</p></div></div>
+        <div id="admin-food-list"></div>
+      </section>
 
-  <div id="admin-food-list"></div>
-</section>
+      <section class="food-management">
+        <h2>Add Food Item</h2>
+        <p>Add a new dish to the customer menu.</p>
+        <form id="add-food-form">
+          <label for="food-name">Food Name</label>
+          <input type="text" id="food-name" maxlength="60" required>
+          <label for="food-price">Price (₹)</label>
+          <input type="number" id="food-price" min="1" step="1" required>
+          <label for="food-category">Category</label>
+          <select id="food-category" required>
+            <option value="">Select category</option>
+            <option value="rice">Rice</option>
+            <option value="pizza">Pizza</option>
+            <option value="snacks">Snacks</option>
+          </select>
+          <label for="food-image">Food Image URL</label>
+          <input type="url" id="food-image" placeholder="https://example.com/food.jpg" required>
+          <button type="submit">Add Food Item</button>
+        </form>
+      </section>
 
-      <div id="admin-orders-list"></div>
-     
+      <section class="admin-orders-section">
+        <div class="section-heading"><div><h2>Order Management</h2><p>Update the status of customer orders below.</p></div></div>
+        <div id="admin-orders-list"></div>
+      </section>
     </section>
-    <section class="food-management">
-  <h2>Food Management</h2>
-  <p>Add a new food item to the menu.</p>
-
-  <form id="add-food-form">
-    <label for="food-name">Food Name</label>
-    <input type="text" id="food-name" required>
-
-    <label for="food-price">Price (₹)</label>
-    <input type="number" id="food-price" min="1" required>
-
-    <label for="food-category">Category</label>
-    <select id="food-category" required>
-      <option value="">Select category</option>
-      <option value="rice">Rice</option>
-      <option value="pizza">Pizza</option>
-      <option value="snacks">Snacks</option>
-    </select>
-
-    <label for="food-image">Food Image URL</label>
-    <input
-      type="url"
-      id="food-image"
-      placeholder="Paste an image link here"
-      required
-    >
-
-    <button type="submit">Add Food Item</button>
-  </form>
-</section>
   </main>
-
-  <script src="./admin.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
