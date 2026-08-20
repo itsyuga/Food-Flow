@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Customer profile and account settings on FoodFlow. Manage saved addresses and view order stats.">
+  <title>My Profile | FoodFlow</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-link" href="index.html" aria-label="FoodFlow Home">
+        <div class="brand-icon">🍲</div>
+        Food<span>Flow</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <div id="nav-admin-link"></div>
+        <div id="nav-auth-links"></div>
+        <button type="button" class="cart-toggle-btn" id="open-cart-btn" aria-label="View Cart">
+          <span>🛒</span> Cart
+          <span class="cart-badge-count" id="cart-count">0</span>
+        </button>
+      </nav>
+
+      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-heading-group">
+      <span class="eyebrow">Customer Account</span>
+      <h2>My Profile & Preferences</h2>
+      <p>Manage your contact info, saved delivery address, and view account activity.</p>
+    </div>
+
+    <div class="profile-grid">
+      <!-- Sidebar / Summary Card -->
+      <aside class="profile-sidebar">
+        <div class="profile-big-avatar" id="profile-avatar">FF</div>
+        <h3 id="profile-display-name" style="font-size: 1.25rem;">Foodie</h3>
+        <p id="profile-display-email" style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.2rem;">user@example.com</p>
+        
+        <div class="profile-stats-list">
+          <div class="profile-stat-box">
+            <div class="profile-stat-val" id="stat-total-orders">0</div>
+            <div class="profile-stat-lbl">Total Orders</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-val" id="stat-total-spent">₹0</div>
+            <div class="profile-stat-lbl">Total Spent</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="stat-member-since">
+          Member since: —
+        </div>
+
+        <button type="button" class="btn btn-danger-outline btn-block btn-sm" id="profile-logout-btn">
+          <span>🚪</span> Sign Out
+        </button>
+      </aside>
+
+      <!-- Main Profile Form & Favorites -->
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- Personal Info Card -->
+        <section class="checkout-card">
+          <h3 style="margin-bottom: 0.35rem; font-size: 1.2rem;">Personal Information</h3>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.25rem;">
+            Keep your delivery details updated for faster checkout.
+          </p>
+
+          <form id="profile-form">
+            <div class="input-group">
+              <label for="profile-name">Full Name</label>
+              <input type="text" id="profile-name" class="form-control" placeholder="Your full name" required>
+            </div>
+
+            <div class="input-group">
+              <label for="profile-email">Email Address</label>
+              <input type="email" id="profile-email" class="form-control" style="background: var(--bg-subtle); cursor: not-allowed;" readonly title="Email cannot be changed directly">
+              <small style="color: var(--text-muted); font-size: 0.78rem;">Email is associated with your account login.</small>
+            </div>
+
+            <div class="input-group">
+              <label for="profile-phone">Phone Number</label>
+              <input type="tel" id="profile-phone" class="form-control" placeholder="10-digit mobile number" pattern="[0-9]{10}">
+            </div>
+
+            <div class="input-group">
+              <label for="profile-address">Default Delivery Address</label>
+              <textarea id="profile-address" class="form-control" placeholder="Flat / House no, Building name, Street, Area, City, Pincode" rows="3"></textarea>
+            </div>
+
+            <button type="submit" id="save-profile-btn" class="btn btn-primary" style="font-weight: 700;">
+              Save Profile Changes
+            </button>
+          </form>
+        </section>
+
+        <!-- Saved Favorites Section -->
+        <section class="checkout-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div>
+              <h3 style="font-size: 1.2rem;">Favorite Dishes ❤️</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem;">Your handpicked favorites for quick re-ordering.</p>
+            </div>
+            <a href="index.html" class="btn btn-secondary btn-sm">+ Browse Menu</a>
+          </div>
+
+          <div id="profile-favorites-list" class="food-grid" style="grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.2rem; margin-bottom: 0;">
+            <!-- Favorites loaded dynamically -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">🍲 Food<span>Flow</span></div>
+      <p style="font-size: 0.85rem;">&copy; 2026 FoodFlow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="app.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

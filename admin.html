@@ -3,59 +3,251 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Food Flow</title>
+  <meta name="description" content="FoodFlow Kitchen Operations & Admin Control Dashboard">
+  <title>Admin Operations Centre | FoodFlow</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <a class="brand" href="index.html" aria-label="Food Flow home">Food <span>Flow</span></a>
-    <a class="back-link" href="index.html">← Customer Menu</a>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-link" href="index.html" aria-label="FoodFlow Home">
+        <div class="brand-icon">⚙️</div>
+        Food<span>Flow</span> <span style="font-size: 0.85rem; background: rgba(244, 140, 6, 0.25); color: #fbd38d; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); margin-left: 0.25rem;">ADMIN</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html" class="nav-link">← Customer Storefront</a>
+        <button type="button" class="btn btn-secondary btn-sm" id="admin-logout-btn" style="color: var(--danger);">
+          Sign Out
+        </button>
+      </nav>
+    </div>
   </header>
+
   <main>
-    <section class="admin-page">
-      <p class="eyebrow">Operations centre</p>
-      <h2>Admin Dashboard</h2>
-      <p class="admin-intro">Manage incoming orders and keep your Food Flow menu up to date.</p>
-      <div class="admin-stats" aria-label="Dashboard summary">
-        <article><span id="total-orders">0</span><p>Total orders</p></article>
-        <article><span id="active-orders">0</span><p>Active orders</p></article>
-        <article><span id="menu-items">0</span><p>Custom menu items</p></article>
+    <!-- Access Denied Screen (Hidden by default) -->
+    <div id="admin-access-denied" class="empty-state-box" style="display: none; max-width: 600px; margin: 3rem auto;">
+      <span class="empty-state-icon">🔒</span>
+      <h2>Admin Access Restricted</h2>
+      <p style="margin: 0.75rem 0 1.5rem; line-height: 1.6;">
+        Your authenticated account does not have administrator privileges. Please contact the project administrator or run the SQL role update query in Supabase.
+      </p>
+      <div style="background: var(--bg-page); padding: 0.85rem; border-radius: var(--radius-md); font-family: monospace; font-size: 0.82rem; margin-bottom: 1.5rem; word-break: break-all;">
+        UPDATE public.profiles SET role = 'admin' WHERE id = 'YOUR_USER_ID';
+      </div>
+      <a href="index.html" class="btn btn-primary">Return to Customer Menu</a>
+    </div>
+
+    <!-- Main Admin Container -->
+    <div id="admin-main-container" class="admin-dashboard-container" style="display: none;">
+      <div class="section-heading-group" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="eyebrow">Kitchen Operations</span>
+          <h2>Operations Dashboard</h2>
+          <p>Real-time order monitoring, menu management, and sales performance.</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="admin-refresh-btn">
+          <span>🔄</span> Refresh Data
+        </button>
       </div>
 
-      <section class="admin-food-list">
-        <div class="section-heading"><div><h2>Menu Items</h2><p>Custom dishes currently visible to customers.</p></div></div>
-        <div id="admin-food-list"></div>
+      <!-- Analytics Cards -->
+      <section class="admin-stats-grid">
+        <div class="admin-stat-card stat-revenue">
+          <div class="stat-number" id="adm-stat-revenue">₹0</div>
+          <div class="stat-title">Total Revenue</div>
+        </div>
+
+        <div class="admin-stat-card stat-orders">
+          <div class="stat-number" id="adm-stat-total-orders">0</div>
+          <div class="stat-title">Total Orders</div>
+        </div>
+
+        <div class="admin-stat-card stat-active">
+          <div class="stat-number" id="adm-stat-active-orders">0</div>
+          <div class="stat-title">Active Orders</div>
+        </div>
+
+        <div class="admin-stat-card stat-dishes">
+          <div class="stat-number" id="adm-stat-dishes">0</div>
+          <div class="stat-title">Menu Dishes</div>
+        </div>
+
+        <div class="admin-stat-card stat-customers">
+          <div class="stat-number" id="adm-stat-customers">0</div>
+          <div class="stat-title">Total Customers</div>
+        </div>
       </section>
 
-      <section class="food-management">
-        <h2>Add Food Item</h2>
-        <p>Add a new dish to the customer menu.</p>
-        <form id="add-food-form">
-          <label for="food-name">Food Name</label>
-          <input type="text" id="food-name" maxlength="60" required>
-          <label for="food-price">Price (₹)</label>
-          <input type="number" id="food-price" min="1" step="1" required>
-          <label for="food-category">Category</label>
-          <select id="food-category" required>
-            <option value="">Select category</option>
-            <option value="rice">Rice</option>
-            <option value="pizza">Pizza</option>
-            <option value="snacks">Snacks</option>
-          </select>
-          <label for="food-image">Food Image URL</label>
-          <input type="url" id="food-image" placeholder="https://example.com/food.jpg" required>
-          <button type="submit">Add Food Item</button>
-        </form>
+      <!-- Tab Navigation -->
+      <nav class="admin-tabs" role="tablist">
+        <button type="button" class="admin-tab-btn active" id="tab-orders-mgmt" role="tab" aria-selected="true">
+          📦 Orders Management
+        </button>
+        <button type="button" class="admin-tab-btn" id="tab-food-mgmt" role="tab" aria-selected="false">
+          🍲 Menu & Food Items
+        </button>
+        <button type="button" class="admin-tab-btn" id="tab-customers-mgmt" role="tab" aria-selected="false">
+          👥 Registered Customers
+        </button>
+      </nav>
+
+      <!-- TAB 1: Orders Management -->
+      <section id="section-orders-mgmt" aria-labelledby="tab-orders-mgmt">
+        <div class="discovery-toolbar" style="margin-bottom: 1.5rem;">
+          <div class="search-sort-row">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="search" id="admin-order-search" class="form-control" placeholder="Search by customer name, phone, or order ID..." aria-label="Search orders">
+            </div>
+
+            <div class="category-filter-scroll" id="admin-status-filters">
+              <button type="button" class="category-chip active" data-status="all">All Status</button>
+              <button type="button" class="category-chip" data-status="Order Placed">Order Placed</button>
+              <button type="button" class="category-chip" data-status="Preparing">Preparing</button>
+              <button type="button" class="category-chip" data-status="Out for Delivery">Out for Delivery</button>
+              <button type="button" class="category-chip" data-status="Delivered">Delivered</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="admin-orders-list" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <!-- Loaded dynamically -->
+        </div>
       </section>
 
-      <section class="admin-orders-section">
-        <div class="section-heading"><div><h2>Order Management</h2><p>Update the status of customer orders below.</p></div></div>
-        <div id="admin-orders-list"></div>
+      <!-- TAB 2: Food & Menu Management -->
+      <section id="section-food-mgmt" style="display: none;" aria-labelledby="tab-food-mgmt">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1.3rem;">Current Menu Items</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Add, edit, or adjust item pricing and stock availability.</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="open-add-food-btn">
+            <span>+</span> Add New Dish
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Dish</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Dietary</th>
+                <th>Rating</th>
+                <th>In Stock</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-food-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
       </section>
-    </section>
+
+      <!-- TAB 3: Customers Management -->
+      <section id="section-customers-mgmt" style="display: none;" aria-labelledby="tab-customers-mgmt">
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Default Address</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="admin-customers-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <!-- Add / Edit Food Modal -->
+  <div class="modal-backdrop" id="food-form-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 520px; padding: 2rem;">
+      <button type="button" class="modal-close-btn" id="food-form-close" aria-label="Close modal">&times;</button>
+      <h3 id="food-form-title" style="margin-bottom: 0.35rem; font-size: 1.3rem;">Add New Food Item</h3>
+      <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.5rem;">Configure dish details, category, pricing, and visual thumbnail.</p>
+
+      <form id="admin-food-form">
+        <input type="hidden" id="edit-food-id">
+
+        <div class="input-group">
+          <label for="food-name-input">Food Name</label>
+          <input type="text" id="food-name-input" class="form-control" placeholder="e.g. Kashmiri Mutton Rogan Josh" maxlength="80" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="input-group">
+            <label for="food-price-input">Price (₹)</label>
+            <input type="number" id="food-price-input" class="form-control" placeholder="240" min="1" step="1" required>
+          </div>
+
+          <div class="input-group">
+            <label for="food-category-select">Category</label>
+            <select id="food-category-select" class="form-control" required>
+              <option value="rice">Rice & Biryani</option>
+              <option value="pizza">Pizza</option>
+              <option value="burger">Burgers</option>
+              <option value="snacks">Snacks & Sides</option>
+              <option value="beverages">Beverages</option>
+              <option value="desserts">Desserts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="food-image-input">Image URL</label>
+          <input type="url" id="food-image-input" class="form-control" placeholder="https://images.unsplash.com/..." required>
+        </div>
+
+        <div class="input-group">
+          <label for="food-desc-input">Description</label>
+          <textarea id="food-desc-input" class="form-control" placeholder="Detailed culinary description and ingredient highlights..." rows="2"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; margin: 1rem 0 1.5rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+            <input type="checkbox" id="food-is-veg" style="width: 18px; height: 18px; accent-color: var(--veg-green);" checked>
+            <span>Pure Vegetarian</span>
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+            <input type="checkbox" id="food-is-available" style="width: 18px; height: 18px; accent-color: var(--success);" checked>
+            <span>In Stock (Available)</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary btn-sm" id="food-form-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="food-form-submit">Save Dish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">⚙️ Food<span>Flow</span> Admin</div>
+      <p style="font-size: 0.85rem;">Secure Kitchen Operations & Management.</p>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script src="app.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>

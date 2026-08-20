@@ -3,78 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food Flow | Fresh food, fast</title>
+  <meta name="description" content="FoodFlow - Fresh, hot, and delicious food delivered fast to your doorstep. Browse biryanis, pizzas, burgers, snacks, drinks, and desserts.">
+  <title>FoodFlow | Fresh & Delicious Food Delivered Fast</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <a class="brand" href="index.html" aria-label="Food Flow home">Food <span>Flow</span></a>
-    <nav class="header-actions" aria-label="Primary navigation">
-      <a class="orders-link" href="orders.html">My Orders</a>
-      <a class="orders-link" href="login.html">Sign In</a>
-      <a class="cart-button" href="#cart-section">Cart <span id="cart-count">0</span></a>
-    </nav>
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-link" href="index.html" aria-label="FoodFlow Home">
+        <div class="brand-icon">🍲</div>
+        Food<span>Flow</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <div id="nav-admin-link"></div>
+        <div id="nav-auth-links" style="display: flex; align-items: center; gap: 0.85rem;">
+          <a href="orders.html" class="nav-link">My Orders</a>
+          <a href="login.html" class="btn btn-secondary btn-sm btn-pill" style="color: var(--primary); font-weight: 700;">Sign In</a>
+        </div>
+        <button type="button" class="cart-toggle-btn" id="open-cart-btn" aria-label="View Cart">
+          <span>🛒</span> Cart
+          <span class="cart-badge-count" id="cart-count">0</span>
+        </button>
+      </nav>
+
+      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">☰</button>
+    </div>
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">Delivered with care</p>
-      <h1>Your cravings, <em>on the way.</em></h1>
-      <p>Fresh favourites from your campus kitchen, ready when you are.</p>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-promo-badge">🚚 Free Delivery on all orders above ₹500!</div>
+        <h1>Your cravings, <em>delivered fast.</em></h1>
+        <p>Freshly prepared meals from top chef kitchens, crafted with premium ingredients and delivered piping hot to your table.</p>
+        
+        <div class="hero-features">
+          <div class="hero-feature-item"><span>⚡</span> 30-Min Fast Delivery</div>
+          <div class="hero-feature-item"><span>🥗</span> 100% Fresh & Hygienic</div>
+          <div class="hero-feature-item"><span>⭐</span> 4.8+ Customer Rating</div>
+        </div>
+      </div>
     </section>
 
-    <h2 class="section-title">Explore the menu</h2>
-    <input type="search" id="search-input" placeholder="Search food here..." aria-label="Search food">
+    <!-- Food Discovery & Filters Toolbar -->
+    <section class="discovery-toolbar" aria-label="Menu Filters and Search">
+      <div class="search-sort-row">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="search-input" class="form-control" placeholder="Search biryani, pizza, burger, desserts..." aria-label="Search dishes">
+          <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Clear search">&times;</button>
+        </div>
 
-    <div class="category-buttons" aria-label="Food categories">
-      <button class="category-button active" data-category="all">All</button>
-      <button class="category-button" data-category="rice">Rice</button>
-      <button class="category-button" data-category="pizza">Pizza</button>
-      <button class="category-button" data-category="snacks">Snacks</button>
+        <div class="filter-actions">
+          <button type="button" class="veg-toggle-btn" id="veg-only-btn" aria-pressed="false">
+            <span class="dietary-icon-veg"></span> Pure Veg
+          </button>
+
+          <select id="sort-select" class="sort-select" aria-label="Sort dishes">
+            <option value="default">Sort by: Recommended</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-desc">Highest Rated ⭐</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Categories Scroll -->
+      <div class="category-filter-scroll" id="category-chips-container" role="tablist" aria-label="Food Categories">
+        <button type="button" class="category-chip active" data-category="all" role="tab" aria-selected="true">
+          <span>🍽️</span> All Dishes
+        </button>
+        <button type="button" class="category-chip" data-category="rice" role="tab" aria-selected="false">
+          <span>🍚</span> Rice & Biryani
+        </button>
+        <button type="button" class="category-chip" data-category="pizza" role="tab" aria-selected="false">
+          <span>🍕</span> Pizza
+        </button>
+        <button type="button" class="category-chip" data-category="burger" role="tab" aria-selected="false">
+          <span>🍔</span> Burgers
+        </button>
+        <button type="button" class="category-chip" data-category="snacks" role="tab" aria-selected="false">
+          <span>🍟</span> Snacks & Sides
+        </button>
+        <button type="button" class="category-chip" data-category="beverages" role="tab" aria-selected="false">
+          <span>🥤</span> Beverages
+        </button>
+        <button type="button" class="category-chip" data-category="desserts" role="tab" aria-selected="false">
+          <span>🍰</span> Desserts
+        </button>
+      </div>
+    </section>
+
+    <!-- Menu Heading -->
+    <div class="section-heading-group" style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div>
+        <span class="eyebrow">Handcrafted Flavours</span>
+        <h2 id="menu-title">Explore Our Menu</h2>
+      </div>
+      <p id="menu-count-text" style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;"></p>
     </div>
 
-    <section class="food-list" id="food-list" aria-live="polite">
-      <article class="food-card" data-category="rice" data-name="chicken biryani">
-        <img src="https://images.unsplash.com/photo-1631515242808-497c3fbd3972?auto=format&fit=crop&w=600&q=80" alt="Chicken Biryani">
-        <h3>Chicken Biryani</h3><p class="food-price">₹220</p>
-        <button onclick="addToCart('Chicken Biryani', 220)">Add to Cart</button>
-      </article>
-      <article class="food-card" data-category="rice" data-name="veg fried rice">
-        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80" alt="Veg Fried Rice">
-        <h3>Veg Fried Rice</h3><p class="food-price">₹150</p>
-        <button onclick="addToCart('Veg Fried Rice', 150)">Add to Cart</button>
-      </article>
-      <article class="food-card" data-category="pizza" data-name="paneer pizza">
-        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80" alt="Paneer Pizza">
-        <h3>Paneer Pizza</h3><p class="food-price">₹280</p>
-        <button onclick="addToCart('Paneer Pizza', 280)">Add to Cart</button>
-      </article>
-      <article class="food-card" data-category="snacks" data-name="french fries">
-        <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80" alt="French Fries">
-        <h3>French Fries</h3><p class="food-price">₹120</p>
-        <button onclick="addToCart('French Fries', 120)">Add to Cart</button>
-      </article>
-      <article class="food-card" data-category="snacks" data-name="veg burger">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Veg Burger">
-        <h3>Veg Burger</h3><p class="food-price">₹160</p>
-        <button onclick="addToCart('Veg Burger', 160)">Add to Cart</button>
-      </article>
-      <article class="food-card" data-category="pizza" data-name="margherita pizza">
-        <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=600&q=80" alt="Margherita Pizza">
-        <h3>Margherita Pizza</h3><p class="food-price">₹240</p>
-        <button onclick="addToCart('Margherita Pizza', 240)">Add to Cart</button>
-      </article>
-    </section>
-
-    <section id="cart-section">
-      <div class="cart-title"><h2>Your Cart</h2><button class="clear-button" onclick="clearCart()">Clear Cart</button></div>
-      <div id="cart-items"><p>Your cart is empty.</p></div>
-      <h3>Total: ₹<span id="total-price">0</span></h3>
-      <button id="order-button" onclick="goToCheckout()">Proceed to Checkout</button>
+    <!-- Food Items Grid -->
+    <section class="food-grid" id="food-list" aria-live="polite">
+      <!-- Skeleton Loaders -->
+      <div class="food-card skeleton skeleton-card"></div>
+      <div class="food-card skeleton skeleton-card"></div>
+      <div class="food-card skeleton skeleton-card"></div>
+      <div class="food-card skeleton skeleton-card"></div>
     </section>
   </main>
+
+  <!-- Food Details Modal -->
+  <div class="modal-backdrop" id="food-detail-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" id="food-modal-close" aria-label="Close food details">&times;</button>
+      <img src="" alt="" id="modal-food-img" class="modal-food-img">
+      <div class="modal-food-content">
+        <div class="modal-food-header">
+          <div>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem;">
+              <span class="dietary-badge" id="modal-dietary-badge"></span>
+              <span class="category-tag-badge" id="modal-food-category"></span>
+            </div>
+            <h3 id="modal-food-title" class="modal-food-title"></h3>
+          </div>
+          <span class="food-rating-pill" id="modal-food-rating">⭐ 4.8</span>
+        </div>
+
+        <p id="modal-food-desc" class="modal-food-desc"></p>
+
+        <div class="modal-action-row">
+          <div>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block;">PRICE</span>
+            <span id="modal-food-price" class="food-price-tag">₹0</span>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <div class="cart-quantity-stepper">
+              <button type="button" class="qty-step-btn" id="modal-qty-minus" aria-label="Decrease quantity">−</button>
+              <span class="qty-val-display" id="modal-qty-display">1</span>
+              <button type="button" class="qty-step-btn" id="modal-qty-plus" aria-label="Increase quantity">+</button>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="modal-add-to-cart-btn">
+              <span>🛒</span> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <div class="footer-brand">🍲 Food<span>Flow</span></div>
+        <p style="margin-top: 0.35rem; font-size: 0.85rem;">Fresh, hygienic, and delectable food delivered right on time.</p>
+      </div>
+      <p style="font-size: 0.85rem;">&copy; 2026 FoodFlow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script src="app.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

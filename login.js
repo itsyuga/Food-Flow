@@ -1,36 +1,181 @@
-const client = window.foodFlowSupabase;
-const form = document.getElementById("auth-form");
-const message = document.getElementById("auth-message");
-const toggle = document.getElementById("auth-toggle");
-let signUpMode = false;
+/**
+ * FoodFlow — Authentication Logic (Sign In & Sign Up)
+ */
 
-async function redirectIfSignedIn() {
+const client = window.FoodFlow.getClient();
+let isSignUpMode = false;
+
+// DOM Elements
+const authForm = document.getElementById('auth-form');
+const tabSignIn = document.getElementById('tab-signin');
+const tabSignUp = document.getElementById('tab-signup');
+const nameGroup = document.getElementById('name-group');
+const phoneGroup = document.getElementById('phone-group');
+const fullNameInput = document.getElementById('full-name');
+const phoneInput = document.getElementById('auth-phone');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const passwordToggleBtn = document.getElementById('password-toggle-btn');
+const authSubmitBtn = document.getElementById('auth-submit-btn');
+const authHeading = document.getElementById('auth-main-heading');
+const authSubHeading = document.getElementById('auth-sub-heading');
+const authSwitchPrompt = document.getElementById('auth-switch-prompt');
+const authSwitchLink = document.getElementById('auth-switch-link');
+const errorBox = document.getElementById('auth-error-box');
+
+// Auto-redirect if already signed in
+async function checkExistingSession() {
+  if (!client) return;
   const { data: { session } } = await client.auth.getSession();
-  if (session) window.location.replace("index.html");
+  if (session) {
+    window.location.replace('index.html');
+  }
 }
 
-function setMode() {
-  document.getElementById("auth-title").textContent = signUpMode ? "Create your account" : "Sign in";
-  document.getElementById("auth-copy").textContent = signUpMode ? "Create an account to place and track your orders." : "Sign in to place and track your orders.";
-  document.getElementById("auth-submit").textContent = signUpMode ? "Create account" : "Sign in";
-  document.getElementById("name-label").hidden = !signUpMode;
-  document.getElementById("full-name").hidden = !signUpMode;
-  document.getElementById("full-name").required = signUpMode;
-  toggle.textContent = signUpMode ? "Already have an account? Sign in" : "New here? Create an account";
-  message.textContent = "";
+// Switch mode (Sign In <-> Sign Up)
+function setMode(signUp) {
+  isSignUpMode = signUp;
+  errorBox.style.display = 'none';
+
+  if (isSignUpMode) {
+    tabSignUp.classList.add('active');
+    tabSignIn.classList.remove('active');
+    tabSignUp.setAttribute('aria-selected', 'true');
+    tabSignIn.setAttribute('aria-selected', 'false');
+
+    nameGroup.style.display = 'flex';
+    phoneGroup.style.display = 'flex';
+    fullNameInput.required = true;
+
+    authHeading.textContent = 'Create Your Account';
+    authSubHeading.textContent = 'Join FoodFlow to enjoy quick delivery and delicious food.';
+    authSubmitBtn.textContent = 'Create Account';
+    authSwitchPrompt.textContent = 'Already have an account?';
+    authSwitchLink.textContent = 'Sign In';
+  } else {
+    tabSignIn.classList.add('active');
+    tabSignUp.classList.remove('active');
+    tabSignIn.setAttribute('aria-selected', 'true');
+    tabSignUp.setAttribute('aria-selected', 'false');
+
+    nameGroup.style.display = 'none';
+    phoneGroup.style.display = 'none';
+    fullNameInput.required = false;
+
+    authHeading.textContent = 'Sign In to Your Account';
+    authSubHeading.textContent = 'Access your orders, saved addresses, and favorite dishes.';
+    authSubmitBtn.textContent = 'Sign In';
+    authSwitchPrompt.textContent = "Don't have an account?";
+    authSwitchLink.textContent = 'Create an account';
+  }
 }
 
-toggle.addEventListener("click", () => { signUpMode = !signUpMode; setMode(); });
-form.addEventListener("submit", async (event) => {
-  event.preventDefault(); message.textContent = "";
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const fullName = document.getElementById("full-name").value.trim();
-  const result = signUpMode
-    ? await client.auth.signUp({ email, password, options: { data: { full_name: fullName } } })
-    : await client.auth.signInWithPassword({ email, password });
-  if (result.error) { message.textContent = result.error.message; return; }
-  if (signUpMode && !result.data.session) { message.textContent = "Account created. Check your email to confirm it, then sign in."; return; }
-  window.location.href = "index.html";
+// Event Listeners
+tabSignIn?.addEventListener('click', () => setMode(false));
+tabSignUp?.addEventListener('click', () => setMode(true));
+authSwitchLink?.addEventListener('click', () => setMode(!isSignUpMode));
+
+// Password visibility toggle
+passwordToggleBtn?.addEventListener('click', () => {
+  const isPassword = passwordInput.type === 'password';
+  passwordInput.type = isPassword ? 'text' : 'password';
+  passwordToggleBtn.textContent = isPassword ? '🙈' : '👁️';
+  passwordToggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
 });
-redirectIfSignedIn();
+
+// Form Submit Handler
+authForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorBox.style.display = 'none';
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const fullName = fullNameInput.value.trim();
+  const phone = phoneInput.value.trim();
+
+  // Basic validation
+  if (!email || !password) {
+    showError('Please enter both your email and password.');
+    return;
+  }
+
+  if (password.length < 6) {
+    showError('Password must be at least 6 characters long.');
+    return;
+  }
+
+  if (isSignUpMode && !fullName) {
+    showError('Please enter your full name.');
+    return;
+  }
+
+  authSubmitBtn.disabled = true;
+  authSubmitBtn.textContent = isSignUpMode ? 'Creating Account...' : 'Signing In...';
+
+  try {
+    if (isSignUpMode) {
+      // Sign Up Flow
+      const { data, error } = await client.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            phone: phone
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // Also ensure profile row is created/updated directly if session exists
+      if (data?.user) {
+        await client.from('profiles').upsert({
+          id: data.user.id,
+          full_name: fullName,
+          phone: phone,
+          role: 'customer'
+        });
+      }
+
+      if (data?.session) {
+        window.FoodFlow.showToast('Account created successfully! Welcome to FoodFlow 🎉', 'success');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+      } else {
+        // Confirmation email required
+        window.FoodFlow.showToast('Account created! Please check your email to verify your account.', 'info', 6000);
+        showError('Verification email sent. Please check your inbox, confirm your email, and then sign in.');
+        authSubmitBtn.disabled = false;
+        authSubmitBtn.textContent = 'Sign In';
+        setMode(false);
+      }
+    } else {
+      // Sign In Flow
+      const { data, error } = await client.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      window.FoodFlow.showToast('Signed in successfully! Welcome back 👋', 'success');
+      setTimeout(() => {
+        // Check for redirect param
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect') || 'index.html';
+        window.location.href = redirect;
+      }, 800);
+    }
+  } catch (err) {
+    showError(err.message || 'Authentication failed. Please try again.');
+    authSubmitBtn.disabled = false;
+    authSubmitBtn.textContent = isSignUpMode ? 'Create Account' : 'Sign In';
+  }
+});
+
+function showError(msg) {
+  errorBox.textContent = msg;
+  errorBox.style.display = 'block';
+}
+
+checkExistingSession();

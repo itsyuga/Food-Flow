@@ -3,23 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Orders | Food Flow</title>
+  <meta name="description" content="Track your active FoodFlow orders in real-time and review past order history.">
+  <title>My Orders | FoodFlow</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <a class="brand" href="index.html" aria-label="Food Flow home">Food <span>Flow</span></a>
-    <a class="back-link" href="index.html">← Back to Menu</a>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-link" href="index.html" aria-label="FoodFlow Home">
+        <div class="brand-icon">🍲</div>
+        Food<span>Flow</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <div id="nav-admin-link"></div>
+        <div id="nav-auth-links"></div>
+        <button type="button" class="cart-toggle-btn" id="open-cart-btn" aria-label="View Cart">
+          <span>🛒</span> Cart
+          <span class="cart-badge-count" id="cart-count">0</span>
+        </button>
+      </nav>
+
+      <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">☰</button>
+    </div>
   </header>
+
   <main>
-    <section class="orders-page">
-      <p class="eyebrow">Order tracking</p>
-      <h2>My Orders</h2>
-      <div id="orders-list" aria-live="polite"></div>
-    </section>
+    <div class="orders-container">
+      <div class="section-heading-group" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="eyebrow">Real-Time Kitchen Tracking</span>
+          <h2>My Food Orders</h2>
+          <p>Track live kitchen status and view your past meals.</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="refresh-orders-btn">
+          <span>🔄</span> Refresh Status
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="orders-filter-tabs" role="tablist">
+        <button type="button" class="orders-tab-btn active" id="tab-active-orders" role="tab" aria-selected="true">
+          Active Orders (<span id="active-orders-count">0</span>)
+        </button>
+        <button type="button" class="orders-tab-btn" id="tab-past-orders" role="tab" aria-selected="false">
+          Past Orders (<span id="past-orders-count">0</span>)
+        </button>
+      </div>
+
+      <!-- Orders List Container -->
+      <section id="orders-list" aria-live="polite">
+        <!-- Skeleton loaders -->
+        <div class="skeleton" style="height: 220px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;"></div>
+        <div class="skeleton" style="height: 220px; border-radius: var(--radius-lg);"></div>
+      </section>
+    </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">🍲 Food<span>Flow</span></div>
+      <p style="font-size: 0.85rem;">&copy; 2026 FoodFlow. Real-time food delivery tracking.</p>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script src="app.js"></script>
   <script src="orders.js"></script>
 </body>
 </html>

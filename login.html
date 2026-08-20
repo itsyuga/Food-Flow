@@ -1,22 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in | Food Flow</title><link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in or create an account with FoodFlow to track orders and save your favorite meals.">
+  <title>Sign In & Sign Up | FoodFlow</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header><a class="brand" href="index.html">Food <span>Flow</span></a><a class="back-link" href="index.html">← Back to Menu</a></header>
-  <main><section class="checkout-box auth-box">
-    <p class="eyebrow">Welcome to Food Flow</p><h2 id="auth-title">Sign in</h2>
-    <p id="auth-copy">Sign in to place and track your orders.</p>
-    <form id="auth-form">
-      <label for="full-name" id="name-label" hidden>Full Name</label><input id="full-name" type="text" autocomplete="name" hidden>
-      <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
-      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="6" required>
-      <p id="auth-message" role="alert"></p><button type="submit" id="auth-submit">Sign in</button>
-    </form>
-    <button class="text-button" id="auth-toggle" type="button">New here? Create an account</button>
-  </section></main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="login.js"></script>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-link" href="index.html" aria-label="FoodFlow Home">
+        <div class="brand-icon">🍲</div>
+        Food<span>Flow</span>
+      </a>
+      <a class="btn btn-secondary btn-sm" href="index.html">← Back to Menu</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-page-container">
+      <div class="auth-card">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <span class="eyebrow">Welcome to FoodFlow</span>
+          <h2 id="auth-main-heading">Sign In to Your Account</h2>
+          <p id="auth-sub-heading" style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 0.25rem;">
+            Access your orders, saved addresses, and favorite dishes.
+          </p>
+        </div>
+
+        <!-- Mode Toggle Tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button type="button" class="auth-tab-btn active" id="tab-signin" role="tab" aria-selected="true">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tab-signup" role="tab" aria-selected="false">Create Account</button>
+        </div>
+
+        <form id="auth-form" novalidate>
+          <!-- Full Name Field (Sign Up only) -->
+          <div class="input-group" id="name-group" style="display: none;">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" class="form-control" placeholder="e.g. Rahul Sharma" autocomplete="name">
+          </div>
+
+          <!-- Phone Field (Sign Up only) -->
+          <div class="input-group" id="phone-group" style="display: none;">
+            <label for="auth-phone">Phone Number (10-digit)</label>
+            <input type="tel" id="auth-phone" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" autocomplete="tel">
+          </div>
+
+          <!-- Email Field -->
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" class="form-control" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+
+          <!-- Password Field -->
+          <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password" class="form-control" placeholder="Minimum 6 characters" autocomplete="current-password" minlength="6" required>
+              <button type="button" id="password-toggle-btn" class="password-toggle-btn" aria-label="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div id="auth-error-box" style="display: none; background: var(--danger-light); color: var(--danger); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.88rem; margin-bottom: 1rem; font-weight: 600;"></div>
+
+          <button type="submit" id="auth-submit-btn" class="btn btn-primary btn-block btn-pill" style="font-weight: 700; margin-top: 0.5rem;">
+            Sign In
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-secondary);">
+          <span id="auth-switch-prompt">Don't have an account?</span>
+          <button type="button" id="auth-switch-link" style="color: var(--accent); font-weight: 700; text-decoration: underline; margin-left: 0.35rem;">
+            Create an account
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">🍲 Food<span>Flow</span></div>
+      <p style="font-size: 0.85rem;">&copy; 2026 FoodFlow. Safe & Secure Authentication.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="app.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>
